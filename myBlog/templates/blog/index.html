@@ -1,0 +1,67 @@
+{% extends 'blog/base.html' %}
+{% block aricle %}
+    <main class="col-md-8">
+        {% for post in post_list %}
+            <article class="post post-1">
+                <header class="entry-header">
+                    <h1 class="entry-title">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h1>
+                    <div class="entry-meta">
+                        <span class="post-category"><a
+                                href="{% url 'blog:category' post.category_id %}">{{ post.category }}</a></span>
+                        <span class="post-date"><a href="{{ post.get_absolute_url }}"><time class="entry-date"
+                                                                                            datetime="2012-11-09T23:15:57+00:00">{{ post.created_time }}</time></a></span>
+                        <span class="post-author"><a href="{{ post.get_absolute_url }}">{{ post.author }}</a></span>
+                        <span class="comments-link"><a href="#">{{ post.comment_set.count }} 评论</a></span>
+                        <span class="views-count"><a href="#">{{ post.view }} 阅读</a></span>
+                    </div>
+                </header>
+                <div class="entry-content clearfix">
+                    <p>{{ post.execrpt }}</p>
+                    <div class="read-more cl-effect-14">
+                        <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+        {% if is_paginated %}
+            <div class="pagination-simple">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+                {% endif %}
+                <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages}} 页</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {#        <div class="pagination">#}
+        {#            <ul>#}
+        {#                <li><a href="">1</a></li>#}
+        {#                <li><a href="">...</a></li>#}
+        {#                <li><a href="">4</a></li>#}
+        {#                <li><a href="">5</a></li>#}
+        {#                <li class="current"><a href="">6</a></li>#}
+        {#                <li><a href="">7</a></li>#}
+        {#                <li><a href="">8</a></li>#}
+        {#                <li><a href="">...</a></li>#}
+        {#                <li><a href="">11</a></li>#}
+        {#            </ul>#}
+        {#        </div>#}
+    </main>
+{% endblock %}
+{% block catalog %}
+    <aside class="col-md-4">
+        <div class="widget widget-recent-posts">
+            <h3 class="widget-title">最新文章</h3>
+            <ul>
+                {% for post in post_list %}
+                    <li>
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+{% endblock %}
